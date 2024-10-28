@@ -30,6 +30,8 @@ pawnPieceShape::pawnPieceShape(sf::Vector2f vec)
     m_trapezium.setPoint(1, sf::Vector2f(vec.x+5, vec.y));
     m_trapezium.setPoint(2, sf::Vector2f(vec.x+15, vec.y+25));
     m_trapezium.setPoint(3, sf::Vector2f(vec.x-15, vec.y+25));
+    m_trapezium.setOrigin(sf::Vector2f(vec.x-5, vec.y));
+    m_trapezium.setPosition(vec.x-5, vec.y);
     m_trapezium.setFillColor(sf::Color::Black);
 
     // Rectangle
@@ -42,6 +44,8 @@ pawnPieceShape::pawnPieceShape(sf::Vector2f vec)
     m_rectangle.setPoint(1, sf::Vector2f(vec.x+20, vec.y+25));
     m_rectangle.setPoint(2, sf::Vector2f(vec.x+20, vec.y+30));
     m_rectangle.setPoint(3, sf::Vector2f(vec.x-20, vec.y+30));
+    m_rectangle.setOrigin(sf::Vector2f(vec.x-20, vec.y+25));
+    m_rectangle.setPosition(vec.x-20, vec.y+25);
     m_rectangle.setFillColor(sf::Color::Black);
 }
 
@@ -59,7 +63,7 @@ std::size_t pawnPieceShape::getPointCount() const
 // Using random ass values for overriding exising methods from shape
 sf::Vector2f pawnPieceShape::getPoint(std::size_t index) const
 {
-    return sf::Vector2f(40.f, 40.f);
+    return sf::Vector2f(100,100);
 }
 
 void pawnPieceShape::draw(sf::RenderWindow &window) 
@@ -68,6 +72,13 @@ void pawnPieceShape::draw(sf::RenderWindow &window)
     window.draw(m_trapezium);
     window.draw(m_rectangle);
     window.draw(m_circle);
+}
+
+void pawnPieceShape::setPosition(sf::Vector2f vecPos)
+{
+    m_trapezium.setPosition(vecPos.x-5, vecPos.y);
+    m_rectangle.setPosition(vecPos.x-20, vecPos.y+25);
+    m_circle.setPosition(vecPos.x-10, vecPos.y-10);
 }
 
 void createBishopShape()

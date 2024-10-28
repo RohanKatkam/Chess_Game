@@ -7,7 +7,8 @@ enum class pieceType_c
 {
     PAWN,
     ROOK,
-    BISHOP
+    BISHOP,
+    INVALID
 };
 
 enum class pieceColor_c
@@ -29,6 +30,7 @@ class pawnPieceShape : public sf::Shape
         virtual std::size_t getPointCount() const;
         virtual sf::Vector2f getPoint(std::size_t index) const;
         void draw(sf::RenderWindow &window);
+        void setPosition(sf::Vector2f vecPos);
 };
 
 // Shapes
