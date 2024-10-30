@@ -14,10 +14,12 @@
 #include <unordered_map>
 #include <vector>
 #include <string>
+#include <cmath>
 
 // Macros
 #define BOARD_ROWS 8
 #define SQUARE_LENGTH 100.f
+#define HALF_SQUARE_LENGTH_INT 50
 
 std::map<std::pair<char, int>, sf::Vector2f> chessBoardPositionMap;
 std::vector<char> columnNames = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'};
@@ -79,6 +81,20 @@ void setBoardPositions()
         }
     }
 }
+
+sf::Vector2f getSquarePosFromCursor(sf::Vector2f cursorVec)
+{
+    int x = cursorVec.x;
+    int y = cursorVec.y;
+
+    int squareX = (int) (std::floor(x / SQUARE_LENGTH) * SQUARE_LENGTH) + HALF_SQUARE_LENGTH_INT;
+    int squareY = (int) (std::floor(y / SQUARE_LENGTH) * SQUARE_LENGTH) + HALF_SQUARE_LENGTH_INT;
+
+    std::cout << "square position: " << squareX << "," << squareY << std::endl;
+
+    return sf::Vector2f(squareX, squareY);
+}
+
 int main()
 {
     // create the window
@@ -122,6 +138,7 @@ int main()
                     // else do nothing
 
                     // find the square id based on cursor's position
+                    
 
                     // See what piece in occupied in that square id
 
@@ -147,11 +164,14 @@ int main()
                     
                     sf::Vector2f localMousePosition = (sf::Vector2f) sf::Mouse::getPosition(window);
                     // If pawn, set that position                
-                    pawn.setPosition(localMousePosition);
-
+                    
                     // @todo requirement: sort of a state machine
                     // where status of mouse click is moving the piece
                     // once released set the position of that piece to that location
+
+                     sf::Vector2f squarePos = getSquarePosFromCursor(localMousePosition);
+
+                     pawn.setPosition(squarePos);
                 }
             }
         }
