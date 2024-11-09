@@ -6,7 +6,9 @@ Note the chess piece ID is a unique non zero identity number assigned to a piece
 
 # How to run
 
-TBD...
+## Installation of SFML Library
+
+### Using SFML in Visual Studio Code
 
 # Doubts
 
