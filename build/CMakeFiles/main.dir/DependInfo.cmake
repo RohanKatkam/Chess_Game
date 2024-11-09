@@ -8,6 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "C:/Users/rohka/Documents/Projects/Learning_Code/Chess_Game/src/board.cpp" "CMakeFiles/main.dir/src/board.cpp.obj" "gcc" "CMakeFiles/main.dir/src/board.cpp.obj.d"
   "C:/Users/rohka/Documents/Projects/Learning_Code/Chess_Game/src/main.cpp" "CMakeFiles/main.dir/src/main.cpp.obj" "gcc" "CMakeFiles/main.dir/src/main.cpp.obj.d"
   "C:/Users/rohka/Documents/Projects/Learning_Code/Chess_Game/src/piece.cpp" "CMakeFiles/main.dir/src/piece.cpp.obj" "gcc" "CMakeFiles/main.dir/src/piece.cpp.obj.d"
   )

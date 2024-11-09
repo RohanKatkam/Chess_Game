@@ -1,15 +1,21 @@
 [
 {
   "directory": "C:/Users/rohka/Documents/Projects/Learning_Code/Chess_Game/build",
-  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe -DSFML_STATIC @CMakeFiles/main.dir/includes_CXX.rsp -g -o CMakeFiles\\main.dir\\src\\main.cpp.obj -c C:\\Users\\rohka\\Documents\\Projects\\Learning_Code\\Chess_Game\\src\\main.cpp",
-  "file": "C:/Users/rohka/Documents/Projects/Learning_Code/Chess_Game/src/main.cpp",
-  "output": "CMakeFiles/main.dir/src/main.cpp.obj"
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe -DSFML_STATIC @CMakeFiles/main.dir/includes_CXX.rsp -g -o CMakeFiles\\main.dir\\src\\board.cpp.obj -c C:\\Users\\rohka\\Documents\\Projects\\Learning_Code\\Chess_Game\\src\\board.cpp",
+  "file": "C:/Users/rohka/Documents/Projects/Learning_Code/Chess_Game/src/board.cpp",
+  "output": "CMakeFiles/main.dir/src/board.cpp.obj"
 },
 {
   "directory": "C:/Users/rohka/Documents/Projects/Learning_Code/Chess_Game/build",
   "command": "C:\\msys64\\ucrt64\\bin\\g++.exe -DSFML_STATIC @CMakeFiles/main.dir/includes_CXX.rsp -g -o CMakeFiles\\main.dir\\src\\piece.cpp.obj -c C:\\Users\\rohka\\Documents\\Projects\\Learning_Code\\Chess_Game\\src\\piece.cpp",
   "file": "C:/Users/rohka/Documents/Projects/Learning_Code/Chess_Game/src/piece.cpp",
   "output": "CMakeFiles/main.dir/src/piece.cpp.obj"
+},
+{
+  "directory": "C:/Users/rohka/Documents/Projects/Learning_Code/Chess_Game/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe -DSFML_STATIC @CMakeFiles/main.dir/includes_CXX.rsp -g -o CMakeFiles\\main.dir\\src\\main.cpp.obj -c C:\\Users\\rohka\\Documents\\Projects\\Learning_Code\\Chess_Game\\src\\main.cpp",
+  "file": "C:/Users/rohka/Documents/Projects/Learning_Code/Chess_Game/src/main.cpp",
+  "output": "CMakeFiles/main.dir/src/main.cpp.obj"
 },
 {
   "directory": "C:/Users/rohka/Documents/Projects/Learning_Code/Chess_Game/build/_deps/sfml-build/src/SFML/System",

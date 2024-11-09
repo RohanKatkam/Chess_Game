@@ -69,6 +69,12 @@
         "cinttypes": "cpp",
         "variant": "cpp",
         "list": "cpp",
-        "xhash": "cpp"
+        "xhash": "cpp",
+        "bitset": "cpp",
+        "fstream": "cpp",
+        "queue": "cpp",
+        "ranges": "cpp",
+        "set": "cpp",
+        "cstdarg": "cpp"
     }
 }

@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <SFML/graphics.hpp>
+#include "board.h"
 #include "piece.h"
 #include <unordered_map>
 #include <vector>
@@ -17,70 +18,7 @@
 #include <cmath>
 
 // Macros
-#define BOARD_ROWS 8
-#define SQUARE_LENGTH 100.f
-#define HALF_SQUARE_LENGTH_INT 50
 
-std::map<std::pair<char, int>, sf::Vector2f> chessBoardPositionMap;
-std::vector<char> columnNames = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'};
-std::vector<char> rowNames = {'1', '2', '3', '4', '5', '6', '7', '8'};
-
-void drawChessBoard(sf::RenderWindow &window)
-{
-    sf::RectangleShape squareYellow(sf::Vector2f(SQUARE_LENGTH, SQUARE_LENGTH));
-    sf::RectangleShape squareBrown(sf::Vector2f(SQUARE_LENGTH, SQUARE_LENGTH));
-
-    // Set colors
-    squareYellow.setFillColor(sf::Color(242,202,92));
-    squareBrown.setFillColor(sf::Color(102,0,0));
-
-    // Draw squares alternate fashion
-    // Looping: Not sure if this is the right way
-    // Because not sure if need shape object for each square in the board
-    float squareYellowPosX = 0;
-    float squareYellowPosY = 0;
-    float squareBrownPosX = 0;
-    float squareBrownPosY = 0;
-    for (int colIdx = 0; colIdx < BOARD_ROWS; colIdx++)
-    {
-        for (int rowIdx = 0; rowIdx < 4; rowIdx++)
-        {
-            // Set positions
-            squareYellowPosY = colIdx * SQUARE_LENGTH;
-            squareBrownPosY = colIdx * SQUARE_LENGTH;
-            if (colIdx % 2)
-            {
-                squareYellowPosX = 2 * rowIdx * SQUARE_LENGTH;
-                squareBrownPosX = (2 * rowIdx + 1) * SQUARE_LENGTH;
-            }
-            // Else alternate colors
-            else 
-            {
-                squareBrownPosX = 2 * rowIdx * SQUARE_LENGTH;
-                squareYellowPosX = (2 * rowIdx + 1) * SQUARE_LENGTH;
-            }
-            
-            squareYellow.setPosition(sf::Vector2f(squareYellowPosX, squareYellowPosY));
-            squareBrown.setPosition(sf::Vector2f(squareBrownPosX, squareBrownPosY));
-
-            // Draw
-            window.draw(squareYellow);
-            window.draw(squareBrown);
-        }
-    }
-}
-
-void setBoardPositions()
-{
-    for (int rowIdx = 0; rowIdx < BOARD_ROWS; rowIdx++)
-    {
-        for (int colIdx = 0; colIdx < BOARD_ROWS; colIdx++)
-        {
-            chessBoardPositionMap[std::make_pair(rowNames.at(rowIdx), columnNames.at(colIdx))] = 
-                sf::Vector2f(50 + (colIdx * SQUARE_LENGTH / 2), 50 + (rowIdx *  SQUARE_LENGTH / 2));
-        }
-    }
-}
 
 sf::Vector2f getSquarePosFromCursor(sf::Vector2f cursorVec)
 {
@@ -90,7 +28,9 @@ sf::Vector2f getSquarePosFromCursor(sf::Vector2f cursorVec)
     int squareX = (int) (std::floor(x / SQUARE_LENGTH) * SQUARE_LENGTH) + HALF_SQUARE_LENGTH_INT;
     int squareY = (int) (std::floor(y / SQUARE_LENGTH) * SQUARE_LENGTH) + HALF_SQUARE_LENGTH_INT;
 
+#ifdef DEBUG_MODE
     std::cout << "square position: " << squareX << "," << squareY << std::endl;
+#endif
 
     return sf::Vector2f(squareX, squareY);
 }
@@ -100,17 +40,27 @@ int main()
     // create the window
     sf::RenderWindow window(sf::VideoMode(800, 800), "My window");
 
-    pawnPieceShape pawn(sf::Vector2f(SQUARE_LENGTH / 2, SQUARE_LENGTH / 2));
-    pawnPieceShape pawn_2(sf::Vector2f(SQUARE_LENGTH * 1.5, SQUARE_LENGTH / 2));
+    PawnPiece pawnPiece_1(sf::Vector2f(SQUARE_LENGTH / 2, SQUARE_LENGTH / 2), PAWN_PIECE_1_ID, std::make_pair('A', '1'));
+    PawnPiece pawnPiece_2(sf::Vector2f(SQUARE_LENGTH * 1.5, SQUARE_LENGTH / 2), PAWN_PIECE_2_ID, std::make_pair('B', '1'));
+    
+    // TODO function place piece on the board, and use pawnPiece_1.getCurrPos
+    chessBoardOccupationMap[std::pair('A', '1')] = pawnPiece_1.getPieceID();
+    chessBoardOccupationMap[std::pair('B', '1')] = pawnPiece_2.getPieceID();
 
-    pieceType_c currentPieceSelected = pieceType_c::INVALID;
+    // TODO
+    pieceType_e currentPieceSelected = pieceType_e::INVALID;
+    int currentPieceSelected_ID = 0;
+
+    std::vector<PawnPiece*> chessPiece_vec = {&pawnPiece_1, &pawnPiece_2};
 
     drawChessBoard(window);
     setBoardPositions();
+#ifdef DEBUG_MODE
     for (const auto &[key, value] : chessBoardPositionMap)
     {
         std::cout << "position:" << (char) key.second << " " << (char) key.first << "," << "(" << value.x << "," << value.y << ")" << std::endl;
     }
+#endif
     bool isMousePressed = false;
     // run the program as long as the window is open
     while (window.isOpen())
@@ -128,19 +78,39 @@ int main()
                 isMousePressed = true;
                 if (event.mouseButton.button == sf::Mouse::Left)
                 {
-                    std::cout << "left click pressed " << std::endl;
+                    // TODO: Add debug flag
+                    // std::cout << "left click pressed " << std::endl;
 
                     sf::Vector2f localMousePosition = (sf::Vector2f) sf::Mouse::getPosition(window);
                     
-                    // @todo requirement: for a piece and move otherwise do nothing!
+                    // @TODO requirement: for a piece and move otherwise do nothing!
                     // get the square ID or more like the number A2, etc, and check for a piece's existence
                     // if there is a piece, move the piece in that position
                     // else do nothing
 
                     // find the square id based on cursor's position
+                    sf::Vector2f squareCoord = getSquarePosFromCursor(localMousePosition);
+                    std::pair<char, char> squarePos = getSquarePosFromCoord(squareCoord);
+                    std::cout << "sq POS: " << squarePos.second << "," << squarePos.first << std::endl;
                     
+                    // TODO: Change this
+                    squarePos = std::make_pair(squarePos.second, squarePos.first);
 
                     // See what piece in occupied in that square id
+                    int pieceIdAtSqure = getPieceIdAtSquare(squarePos);
+                    std::cout << "FOUND piece ID at sq: " << pieceIdAtSqure << std::endl;
+
+                    for (auto &chessPieceEle : chessPiece_vec)
+                    {
+                        if ((*chessPieceEle).getPieceID() == pieceIdAtSqure)
+                        {
+                            currentPieceSelected_ID = pieceIdAtSqure;
+                            (*chessPieceEle).setCoord(squareCoord);
+                            (*chessPieceEle).draw(window);
+
+                            setPieceIdAtSquare(squarePos, 0);
+                        }
+                    }
 
                     // current selected piece is that piece
                 }
@@ -151,7 +121,17 @@ int main()
                 if (isMousePressed)
                 {
                     sf::Vector2f localMousePosition = (sf::Vector2f) sf::Mouse::getPosition(window);
-                    pawn.setPosition(localMousePosition);
+                    // pawn.setPosition(localMousePosition);
+                    // pawnPiece_1.setCoord(localMousePosition);
+                    // pawnPiece_1.draw(window);
+                    for (auto &chessPieceEle : chessPiece_vec)
+                    {
+                        if ((*chessPieceEle).getPieceID() == currentPieceSelected_ID)
+                        {
+                            (*chessPieceEle).setCoord(localMousePosition);
+                            (*chessPieceEle).draw(window);
+                        }
+                    }
                 }
             }
 
@@ -169,9 +149,34 @@ int main()
                     // where status of mouse click is moving the piece
                     // once released set the position of that piece to that location
 
-                     sf::Vector2f squarePos = getSquarePosFromCursor(localMousePosition);
+                    sf::Vector2f squareCoord = getSquarePosFromCursor(localMousePosition);
+                    std::pair<char, char> squarePos = getSquarePosFromCoord(squareCoord);
+                    // Square Pos is same as ID
+                    // TODO: Change this
+                    squarePos = std::make_pair(squarePos.second, squarePos.first);
+                    
 
-                     pawn.setPosition(squarePos);
+                    for (auto &chessPieceEle : chessPiece_vec)
+                    {
+                        int eleId = (*chessPieceEle).getPieceID();
+                        if (eleId == currentPieceSelected_ID)
+                        {
+                            (*chessPieceEle).setCoord(squareCoord);
+                            (*chessPieceEle).draw(window);
+
+                            // Now this square is occupied with a piece of some id
+                            setPieceIdAtSquare(squarePos, eleId);
+
+                            // piece is released from the cursor
+                            currentPieceSelected_ID = 0;
+
+
+                        }
+                    }
+
+                    // pawnPiece_1.setCoord(squareCoord);
+                    // pawnPiece_1.draw(window);
+                    // pawn.setPosition(squarePos);
                 }
             }
         }
@@ -187,11 +192,13 @@ int main()
 
         // Pawn
         
-        pawn.draw(window);
+        // pawn.drawShape(window);
+        pawnPiece_1.draw(window);
 
         // Another one, pawn
 
-        pawn_2.draw(window);
+        // pawn_2.drawShape(window);
+        pawnPiece_2.draw(window);
 
         // end the current frame
         window.display();

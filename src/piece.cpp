@@ -8,24 +8,33 @@
 #include <utility>
 #include <SFML/graphics.hpp>
 #include "piece.h"
+#include "board.h"
 
+
+// CONST KI ZARORAT NAHI HAI
+/* CHESS PIECE METHOD DEFINITIONS*/
+
+// CHESS PIECE SHAPE
+std::size_t ChessPieceShape::getPointCount() const
+{
+    return 0;
+}
+
+// PAWN PIECE SHAPE
 
 // Ideally a param should be starting point for the shape
-pawnPieceShape::pawnPieceShape(sf::Vector2f vec)
+PawnPieceShape::PawnPieceShape(sf::Vector2f vec)
 {
     // Circle Head
     // change these literals to BOARD_SQUARE_HALF
     m_circle.setRadius(10.f);
-    m_circle.setPosition(vec.x-10, vec.y-15);
-    // m_circle.setPosition(40.f, 35.f);
+    m_circle.setPosition(vec.x-10, vec.y-10);
+    // m_circle.setOrigin(sf::Vector2f(vec.x-10, vec.y-10));
+    m_circle.setPosition(vec.x-10, vec.y-10);
     m_circle.setFillColor(sf::Color::Black);
 
     // Trapezium
     m_trapezium.setPointCount(4);
-    // m_trapezium.setPoint(0, sf::Vector2f(45.f, 50.f));
-    // m_trapezium.setPoint(1, sf::Vector2f(55.f, 50.f));
-    // m_trapezium.setPoint(2, sf::Vector2f(65.f, 75.f));
-    // m_trapezium.setPoint(3, sf::Vector2f(35.f, 75.f));
     m_trapezium.setPoint(0, sf::Vector2f(vec.x-5, vec.y));
     m_trapezium.setPoint(1, sf::Vector2f(vec.x+5, vec.y));
     m_trapezium.setPoint(2, sf::Vector2f(vec.x+15, vec.y+25));
@@ -36,10 +45,6 @@ pawnPieceShape::pawnPieceShape(sf::Vector2f vec)
 
     // Rectangle
     m_rectangle.setPointCount(4);
-    // m_rectangle.setPoint(0, sf::Vector2f(30.f, 75.f));
-    // m_rectangle.setPoint(1, sf::Vector2f(70.f, 75.f));
-    // m_rectangle.setPoint(2, sf::Vector2f(70.f, 80.f));
-    // m_rectangle.setPoint(3, sf::Vector2f(30.f, 80.f));
     m_rectangle.setPoint(0, sf::Vector2f(vec.x-20, vec.y+25));
     m_rectangle.setPoint(1, sf::Vector2f(vec.x+20, vec.y+25));
     m_rectangle.setPoint(2, sf::Vector2f(vec.x+20, vec.y+30));
@@ -49,84 +54,100 @@ pawnPieceShape::pawnPieceShape(sf::Vector2f vec)
     m_rectangle.setFillColor(sf::Color::Black);
 }
 
-pawnPieceShape::~pawnPieceShape()
+PawnPieceShape::~PawnPieceShape()
 {
-
+    std::cout << "Destruction !! \n";
 }
 
-// Using random ass values for overriding exising methods from shape
-std::size_t pawnPieceShape::getPointCount() const
+std::size_t PawnPieceShape::getPointCount() const
 {
+    // Using random ass values for overriding exising methods from shape
      return 30;
 }
 
 // Using random ass values for overriding exising methods from shape
-sf::Vector2f pawnPieceShape::getPoint(std::size_t index) const
+sf::Vector2f PawnPieceShape::getPoint(std::size_t index) const
 {
-    return sf::Vector2f(100,100);
+    return m_circle.getOrigin();
 }
 
-void pawnPieceShape::draw(sf::RenderWindow &window) 
-{
-    // Ideally return these elements instead of window drawing
-    window.draw(m_trapezium);
-    window.draw(m_rectangle);
-    window.draw(m_circle);
-}
-
-void pawnPieceShape::setPosition(sf::Vector2f vecPos)
+void PawnPieceShape::setShapePos(sf::Vector2f vecPos)
 {
     m_trapezium.setPosition(vecPos.x-5, vecPos.y);
     m_rectangle.setPosition(vecPos.x-20, vecPos.y+25);
     m_circle.setPosition(vecPos.x-10, vecPos.y-10);
 }
 
-void createBishopShape()
+void PawnPieceShape::drawShape(sf::RenderWindow &window)
 {
-
+    window.draw(m_trapezium);
+    window.draw(m_rectangle);
+    window.draw(m_circle);
 }
 
-void createRookShape()
-{
+/* CHESS PIECES METHOD DEFINITIONS*/
 
+ChessPiece::ChessPiece(int id, std::pair<char, char> piecePos)
+{
+    m_pieceID = id;
+    m_piecePos = piecePos;
+    m_currPieceStatus = pieceStatus_e::ON_BOARD;
 }
 
-void createDefaultShape()
+int ChessPiece::getPieceID()
 {
-
+    return m_pieceID;
 }
 
-void createPawnShape(sf::RenderWindow &window)
-{   
-    
+std::pair<char, char> ChessPiece::getPiecePos()
+{
+    // like A2, etc
+    return m_piecePos;
 }
 
-class chessPiece
+int ChessPiece::setPiecePos(std::pair<char, char> pos)
 {
-    private:
-        /* data */
-
-    public:
-        chessPiece(pieceType_c piece);
-        ~chessPiece();
-
-        void movePiece();
-        sf::Vector2f getPosition();
-        void resetPosition();
-};
-
-chessPiece::chessPiece(pieceType_c piece)
-{
-    // Draw the piece diagram based on the macro
-
-    // Set the position, with reset position
+    m_piecePos = pos;
+    // return 0 if success
+    return 0;
 }
 
-chessPiece::~chessPiece()
+int ChessPiece::setCurrPieceStatus(pieceStatus_e status)
 {
+    m_currPieceStatus = status;
+    // return 0 if success
+    return 0;
 }
 
-void chessPiece::movePiece()
-{
+/* PAWN PIECE METHOD DEFINITIONS */
 
+PawnPiece::PawnPiece(sf::Vector2f vec, int id, std::pair<char, char> piecePos) 
+    : pawnShape(vec), ChessPiece(id, piecePos)
+{
+    // other code?
+}
+
+void PawnPiece::setCoord(sf::Vector2f vecCoord)
+{
+    pawnShape.setShapePos(vecCoord);
+}
+
+// Use this function all the time while rendering!
+void PawnPiece::draw(sf::RenderWindow &window)
+{
+    pawnShape.drawShape(window);
+}
+
+void PawnPiece::movePiece(std::pair<char, char> pos)
+{
+    sf::Vector2f coord = getChessSquareCoord(pos);
+    setCoord(coord);
+}
+
+
+/* OTHER FUNCTIONS */
+
+sf::Vector2f getChessSquareCoord(std::pair<char, char> pos)
+{
+    return chessBoardPositionMap[pos];
 }
