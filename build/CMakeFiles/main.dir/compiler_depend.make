@@ -549,7 +549,8 @@ CMakeFiles/main.dir/src/main.cpp.obj: C:/Users/rohka/Documents/Projects/Learning
   C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/13.2.0/include/stdint.h \
   C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/13.2.0/include/syslimits.h \
   C:/Users/rohka/Documents/Projects/Learning_Code/Chess_Game/src/board.h \
-  C:/Users/rohka/Documents/Projects/Learning_Code/Chess_Game/src/piece.h
+  C:/Users/rohka/Documents/Projects/Learning_Code/Chess_Game/src/piece.h \
+  C:/Users/rohka/Documents/Projects/Learning_Code/Chess_Game/src/util.h
 
 CMakeFiles/main.dir/src/piece.cpp.obj: C:/Users/rohka/Documents/Projects/Learning_Code/Chess_Game/src/piece.cpp \
   _deps/sfml-src/include/SFML/Config.hpp \
@@ -1381,6 +1382,8 @@ C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/13.2.0/include/stdint.h:
 C:/Users/rohka/Documents/Projects/Learning_Code/Chess_Game/src/board.h:
 
 C:/Users/rohka/Documents/Projects/Learning_Code/Chess_Game/src/piece.h:
+
+C:/Users/rohka/Documents/Projects/Learning_Code/Chess_Game/src/util.h:
 
 C:/Users/rohka/Documents/Projects/Learning_Code/Chess_Game/src/piece.cpp:
 

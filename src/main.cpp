@@ -39,23 +39,23 @@ int main()
     // create the window
     sf::RenderWindow window(sf::VideoMode(800, 800), "My window");
 
-    PawnPiece pawnPiece_1(sf::Vector2f(SQUARE_LENGTH / 2, SQUARE_LENGTH / 2), PAWN_PIECE_1_ID, std::make_pair('A', '1'));
-    PawnPiece pawnPiece_2(sf::Vector2f(SQUARE_LENGTH * 1.5, SQUARE_LENGTH / 2), PAWN_PIECE_2_ID, std::make_pair('B', '1'));
-    PawnPiece pawnPiece_3(sf::Vector2f(SQUARE_LENGTH * 2.5, SQUARE_LENGTH / 2), PAWN_PIECE_3_ID, std::make_pair('C', '1'));
-    PawnPiece pawnPiece_4(sf::Vector2f(SQUARE_LENGTH * 3.5, SQUARE_LENGTH / 2), PAWN_PIECE_4_ID, std::make_pair('D', '1'));
+    PawnPiece *pawnPiece_1 = new PawnPiece(sf::Vector2f(SQUARE_LENGTH / 2, SQUARE_LENGTH / 2), PAWN_PIECE_1_ID, std::make_pair('A', '1'));
+    PawnPiece *pawnPiece_2 = new PawnPiece(sf::Vector2f(SQUARE_LENGTH * 1.5, SQUARE_LENGTH / 2), PAWN_PIECE_2_ID, std::make_pair('B', '1'));
+    PawnPiece *pawnPiece_3 = new PawnPiece(sf::Vector2f(SQUARE_LENGTH * 2.5, SQUARE_LENGTH / 2), PAWN_PIECE_3_ID, std::make_pair('C', '1'));
+    PawnPiece *pawnPiece_4 = new PawnPiece(sf::Vector2f(SQUARE_LENGTH * 3.5, SQUARE_LENGTH / 2), PAWN_PIECE_4_ID, std::make_pair('D', '1'));
     
     // TODO function place piece on the board, and use pawnPiece_1.getCurrPos
     
-    chessBoardOccupationMap[std::pair('A', '1')] = pawnPiece_1.getPieceID();
-    chessBoardOccupationMap[std::pair('B', '1')] = pawnPiece_2.getPieceID();
-    chessBoardOccupationMap[std::pair('C', '1')] = pawnPiece_3.getPieceID();
-    chessBoardOccupationMap[std::pair('D', '1')] = pawnPiece_4.getPieceID();
+    chessBoardOccupationMap[std::pair('A', '1')] = pawnPiece_1->getPieceID();
+    chessBoardOccupationMap[std::pair('B', '1')] = pawnPiece_2->getPieceID();
+    chessBoardOccupationMap[std::pair('C', '1')] = pawnPiece_3->getPieceID();
+    chessBoardOccupationMap[std::pair('D', '1')] = pawnPiece_4->getPieceID();
 
     // TODO
     pieceType_e currentPieceSelected = pieceType_e::INVALID;
     int currentPieceSelected_ID = 0;
 
-    std::vector<PawnPiece*> chessPiece_vec = {&pawnPiece_1, &pawnPiece_2, &pawnPiece_3, &pawnPiece_4};
+    std::vector<ChessPiece*> chessPiece_vec = {pawnPiece_1, pawnPiece_2, pawnPiece_3, pawnPiece_4};
 
     drawChessBoard(window);
     setBoardPositions();
@@ -100,7 +100,6 @@ int main()
 
                     // See what piece in occupied in that square id
                     int pieceIdAtSqure = getPieceIdAtSquare(squarePos);
-                    // std::cout << "FOUND piece ID at sq: " << pieceIdAtSqure << std::endl;
                     DEBUG_PRINT("FOUND piece ID at sq: " << pieceIdAtSqure);
 
                     for (auto &chessPieceEle : chessPiece_vec)
@@ -110,7 +109,6 @@ int main()
                             // current selected piece is that piece
                             currentPieceSelected_ID = pieceIdAtSqure;
                             (*chessPieceEle).setCoord(squareCoord);
-                            (*chessPieceEle).draw(window);
 
                             setPieceIdAtSquare(squarePos, 0);
                         }
@@ -129,7 +127,6 @@ int main()
                         if ((*chessPieceEle).getPieceID() == currentPieceSelected_ID)
                         {
                             (*chessPieceEle).setCoord(localMousePosition);
-                            (*chessPieceEle).draw(window);
                         }
                     }
                 }
@@ -160,7 +157,6 @@ int main()
                         if (eleId == currentPieceSelected_ID)
                         {
                             (*chessPieceEle).setCoord(squareCoord);
-                            (*chessPieceEle).draw(window);
 
                             // Now this square is occupied with a piece of some id
                             setPieceIdAtSquare(squarePos, eleId);
@@ -179,10 +175,10 @@ int main()
         // Draw Chess Board
         drawChessBoard(window);
         
-        pawnPiece_1.draw(window);
-        pawnPiece_2.draw(window);
-        pawnPiece_3.draw(window);
-        pawnPiece_4.draw(window);
+        pawnPiece_1->draw(window);
+        pawnPiece_2->draw(window);
+        pawnPiece_3->draw(window);
+        pawnPiece_4->draw(window);
 
         // end the current frame
         window.display();
