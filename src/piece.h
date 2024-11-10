@@ -3,6 +3,13 @@
 
 #include <SFML/Graphics.hpp>
 
+/* DEFINES */
+#define PAWN_PIECE_1_ID 69
+#define PAWN_PIECE_2_ID 70
+#define PAWN_PIECE_3_ID 71
+#define PAWN_PIECE_4_ID 72
+
+
 enum class pieceType_e 
 {
     PAWN = 1,

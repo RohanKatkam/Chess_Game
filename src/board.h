@@ -12,9 +12,6 @@
 #define HALF_SQUARE_LENGTH_INT 50
 #define UNOCCUPIED 0
 
-#define PAWN_PIECE_1_ID 69
-#define PAWN_PIECE_2_ID 70
-
 extern std::map<std::pair<char, char>, sf::Vector2f> chessBoardPositionMap;
 extern std::map<std::pair<char, char>, int> chessBoardOccupationMap;
 extern std::pair<char, char> chessBoardPositionArr[BOARD_ROWS][BOARD_ROWS];
