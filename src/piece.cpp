@@ -7,11 +7,11 @@
 #include <vector>
 #include <utility>
 #include <SFML/graphics.hpp>
+
 #include "piece.h"
 #include "board.h"
+#include "util.h"
 
-
-// CONST KI ZARORAT NAHI HAI
 /* CHESS PIECE METHOD DEFINITIONS*/
 
 // CHESS PIECE SHAPE
@@ -23,15 +23,16 @@ std::size_t ChessPieceShape::getPointCount() const
 // PAWN PIECE SHAPE
 
 // Ideally a param should be starting point for the shape
-PawnPieceShape::PawnPieceShape(sf::Vector2f vec)
+PawnPieceShape::PawnPieceShape(sf::Vector2f vec, sf::Color color=sf::Color::Black)
 {
+    m_Color = color;
     // Circle Head
     // change these literals to BOARD_SQUARE_HALF
     m_circle.setRadius(10.f);
     m_circle.setPosition(vec.x-10, vec.y-10);
     // m_circle.setOrigin(sf::Vector2f(vec.x-10, vec.y-10));
     m_circle.setPosition(vec.x-10, vec.y-10);
-    m_circle.setFillColor(sf::Color::Black);
+    m_circle.setFillColor(m_Color);
 
     // Trapezium
     m_trapezium.setPointCount(4);
@@ -41,7 +42,7 @@ PawnPieceShape::PawnPieceShape(sf::Vector2f vec)
     m_trapezium.setPoint(3, sf::Vector2f(vec.x-15, vec.y+25));
     m_trapezium.setOrigin(sf::Vector2f(vec.x-5, vec.y));
     m_trapezium.setPosition(vec.x-5, vec.y);
-    m_trapezium.setFillColor(sf::Color::Black);
+    m_trapezium.setFillColor(m_Color);
 
     // Rectangle
     m_rectangle.setPointCount(4);
@@ -51,12 +52,12 @@ PawnPieceShape::PawnPieceShape(sf::Vector2f vec)
     m_rectangle.setPoint(3, sf::Vector2f(vec.x-20, vec.y+30));
     m_rectangle.setOrigin(sf::Vector2f(vec.x-20, vec.y+25));
     m_rectangle.setPosition(vec.x-20, vec.y+25);
-    m_rectangle.setFillColor(sf::Color::Black);
+    m_rectangle.setFillColor(m_Color);
 }
 
 PawnPieceShape::~PawnPieceShape()
 {
-    std::cout << "Destruction !! \n";
+    DEBUG_PRINT("Destruction !!");
 }
 
 std::size_t PawnPieceShape::getPointCount() const
@@ -87,11 +88,12 @@ void PawnPieceShape::drawShape(sf::RenderWindow &window)
 
 /* CHESS PIECES METHOD DEFINITIONS*/
 
-ChessPiece::ChessPiece(int id, std::pair<char, char> piecePos)
+ChessPiece::ChessPiece(int id, std::pair<char, char> piecePos, pieceType_e type)
 {
     m_pieceID = id;
     m_piecePos = piecePos;
     m_currPieceStatus = pieceStatus_e::ON_BOARD;
+    m_pieceType = type;
 }
 
 int ChessPiece::getPieceID()
@@ -119,16 +121,22 @@ int ChessPiece::setCurrPieceStatus(pieceStatus_e status)
     return 0;
 }
 
+pieceType_e ChessPiece::getPieceType()
+{
+    return m_pieceType;
+}
+
 /* PAWN PIECE METHOD DEFINITIONS */
 
-PawnPiece::PawnPiece(sf::Vector2f vec, int id, std::pair<char, char> piecePos) 
-    : pawnShape(vec), ChessPiece(id, piecePos)
+PawnPiece::PawnPiece(sf::Vector2f vec, int id, std::pair<char, char> piecePos, sf::Color color) 
+    : pawnShape(vec, color), ChessPiece(id, piecePos, pieceType_e::PAWN)
 {
     // other code?
 }
 
 void PawnPiece::setCoord(sf::Vector2f vecCoord)
 {
+    // std::cout << "Set coord: " << vecCoord.x << ", " << vecCoord.y << std::endl;
     pawnShape.setShapePos(vecCoord);
 }
 
@@ -140,14 +148,7 @@ void PawnPiece::draw(sf::RenderWindow &window)
 
 void PawnPiece::movePiece(std::pair<char, char> pos)
 {
-    sf::Vector2f coord = getChessSquareCoord(pos);
+    // TODO: INCORRECT FORMAT!
+    sf::Vector2f coord = getSquareCoordFromPos(pos);
     setCoord(coord);
-}
-
-
-/* OTHER FUNCTIONS */
-
-sf::Vector2f getChessSquareCoord(std::pair<char, char> pos)
-{
-    return chessBoardPositionMap[pos];
 }

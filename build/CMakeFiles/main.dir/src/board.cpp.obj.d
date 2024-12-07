@@ -263,4 +263,5 @@ CMakeFiles/main.dir/src/board.cpp.obj: \
  C:/Users/rohka/Documents/Projects/Learning_Code/Chess_Game/build/_deps/sfml-src/include/SFML/Graphics/Sprite.hpp \
  C:/Users/rohka/Documents/Projects/Learning_Code/Chess_Game/build/_deps/sfml-src/include/SFML/Graphics/Text.hpp \
  C:/Users/rohka/Documents/Projects/Learning_Code/Chess_Game/build/_deps/sfml-src/include/SFML/Graphics/VertexBuffer.hpp \
- C:\Users\rohka\Documents\Projects\Learning_Code\Chess_Game\src\board.h
+ C:\Users\rohka\Documents\Projects\Learning_Code\Chess_Game\src\board.h \
+ C:\Users\rohka\Documents\Projects\Learning_Code\Chess_Game\src\util.h

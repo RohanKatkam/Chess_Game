@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#define DEBUG_MODE 0
+#define DEBUG_MODE 1
 
 #if DEBUG_MODE
     #define DEBUG_PRINT(x) std::cout << x << std::endl;
